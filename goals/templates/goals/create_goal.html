@@ -1,0 +1,17 @@
+{% extends 'goals/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Create Goal</h2>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+        {{ form.as_p }}
+   
+      </div>
+    
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+  </div>
+{% endblock %}

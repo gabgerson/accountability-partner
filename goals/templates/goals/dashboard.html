@@ -1,0 +1,22 @@
+{% extends 'goals/base.html' %}
+{% block content %}
+<div class="container">
+  <div class="text-center">
+    <h1>{{ user.username }}'s Goals</h1>
+    <a href="{% url 'create_goal' %}" class="btn btn-primary">Create New Goal</a>
+  </div>
+
+  
+  {% for goal in goals %}
+
+  <h2><a href="{% url 'detail_goal' goal.id %}">{{ goal.title }}</a></h2>
+  <a href="{% url 'delete_goal' goal.id %}" class="btn btn-danger">Delete Goal</a>
+  <a href="{% url 'update_goal' goal.id %}" class="btn btn-primary">Edit</a>
+  TODO: ADD STEP LINK
+  <div class="row">
+    TODO: ADD STEPS LATER
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic
+from django.contrib.auth.forms import UserCreationForm
+from .models import Goal, Step
+from django.contrib.auth import authenticate, login
+# from .forms import VideoForm, SearchForm
+from django.http import Http404, JsonResponse
+from django.forms.utils import ErrorList
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+import urllib
+# import requests
+
+def home(request):
+    return render(request, 'goals/home.html')
+
+@login_required
+def dashboard(request):
+    goals = Goal.objects.filter(user=request.user)
+    return render(request, 'goals/dashboard.html',{'goals':goals})
+
+
+class SignUp(generic.CreateView):
+
+    form_class = UserCreationForm
+    success_url = reverse_lazy('home')
+    template_name = 'registration/signup.html'
+    
+    def form_valid(self, form):
+        view = super(SignUp, self).form_valid(form)
+        username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+        return view
+
+class CreateGoal(LoginRequiredMixin, generic.CreateView):
+    model = Goal
+    fields = ['title']
+    template_name = 'goals/create_goal.html'
+    # success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        super(CreateGoal, self).form_valid(form)
+        # return redirect('dashboard')
+        return redirect('home')
+
+class DetailGoal(generic.DetailView):
+    model = Goal
+    template_name = 'goals/detail_goal.html'
+
+class UpdateGoal(LoginRequiredMixin, generic.UpdateView):
+    model = Goal
+    template_name = 'goals/update_goal.html'
+    fields = ['title']
+    # success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('home')
+
+    def get_object(self):
+        goal = super(UpdateGoal, self).get_object()
+        if not goal.user == self.request.user:
+            raise Http404
+        return goal
+
+class DeleteGoal(LoginRequiredMixin, generic.DeleteView):
+    model = Goal
+    template_name = 'goals/delete_goal.html'
+    success_url = reverse_lazy('dashboard')
+    
+    def get_object(self):
+        goal = super(DeleteGoal, self).get_object()
+        if not goal.user == self.request.user:
+            raise Http404
+        return goal

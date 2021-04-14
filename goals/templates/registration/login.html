@@ -1,0 +1,21 @@
+{% extends 'goals/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Login</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {% if form.non_field_errors %} <div class="alert alert-danger"> {{ form.non_field_errors }}</div> {% endif %}
+
+     
+        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+    
+        {{ form.as_p }}
+  
+        </div>
+
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
+{% endblock %}
