@@ -1,5 +1,52 @@
 {% extends 'goals/base.html' %}
 
 {% block content %}
-detail
+
+<div class="container">
+  <h1>{{ goal.title }}</h1>
+  <h4 class="text-muted">{{ goal.user.username }}</h4>
+
+
+  {% if user.id == goal.user.id %}
+  <a href="{% url 'delete_goal' goal.id %}" class="btn btn-danger">Delete Goal</a>
+  <a href="{% url 'update_goal' goal.id %}" class="btn btn-primary">Edit</a>
+  <a href="{% url 'add_step' goal.id %}" class="btn btn-primary">Add Step</a>
+
+  {% endif %}
+  <div class="row">
+    {% for step in goal.step_set.all %}
+    <div class="col-md-4 mt-3">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <p class="card-text">{{ step.title }}</p>
+              <p class="card-text">{{ step.progress }}</p>
+              
+              {% if  step.done  == False %}
+              <h6 class="card-text">Done: No</h6>
+              {% else %}
+              <h6 class="card-text">Done: Yes</h6>
+              {% endif %}
+              
+              {% if user.id == goal.user.id %}
+              <a href="{% url 'delete_step' step.id %}" class="btn btn-danger">Delete</a>
+              {% endif %}
+            </div>  
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
 {% endblock %}
+<div class="row">
+    <div class="col-md-4 mt-3">
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-text">{{ step.title }}</h2>
+            <p class="card-text">{{ step.progress }}</p>
+            <h6 class="card-text">Done: {{ step.done }}</h6>
+          </div>  
+      </div>
+    </div>
+  </div>

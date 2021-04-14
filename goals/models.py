@@ -7,7 +7,7 @@ class Goal(models.Model):
 
 class Step(models.Model):
     title = models.CharField(max_length=255)
-    progess = models.TextField()
+    progress = models.TextField(default='In Progress')
     done = models.BooleanField()
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
 

@@ -1,5 +1,15 @@
 {% extends 'goals/base.html' %}
-
 {% block content %}
-delete
+<div class="container">
+  <h2>Are you sure you want to delete this Goal?</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+  
+  <br/>
+  <h2><a href="{% url 'detail_goal' goal.id %}">{{ goal.title }}</a></h2>
+
+</div>
 {% endblock %}

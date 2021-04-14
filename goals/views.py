@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from .models import Goal, Step
 from django.contrib.auth import authenticate, login
-# from .forms import VideoForm, SearchForm
+from .forms import StepForm, SearchForm
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
 from django.contrib.auth.decorators import login_required
@@ -20,11 +20,62 @@ def dashboard(request):
     goals = Goal.objects.filter(user=request.user)
     return render(request, 'goals/dashboard.html',{'goals':goals})
 
+@login_required
+def add_step(request, pk):
+    form = StepForm
+#     search_form = SearchForm()
+    goal = Goal.objects.get(pk=pk)
+    if not goal.user == request.user:
+        raise Http404
+
+    if request.method == 'POST':
+        #CREATE
+        form = StepForm(request.POST)
+        if form.is_valid():
+            step = Step()
+            step.goal = goal
+            step.title = form.cleaned_data['title']
+            print(step.title)
+            step.progress = form.cleaned_data['progress']
+            step.done = form.cleaned_data['done']
+            step.save()
+            return redirect('detail_goal', pk)
+
+    return render(request, 'goals/add_step.html', {'form': form, 'goal': goal})
+
+
+class UpdateStep(LoginRequiredMixin, generic.UpdateView):
+    model = Step
+    template_name = 'goals/update_step.html'
+    fields = ['title', 'progress', 'done']
+    success_url = reverse_lazy('dashboard')
+
+
+    def get_object(self):
+        step = super(UpdateStep, self).get_object()
+        if not step.goal.user == self.request.user:
+            raise Http404
+        return step
+
+class DeleteStep(LoginRequiredMixin, generic.DeleteView):
+    model = Step
+    template_name = 'goals/delete_step.html'
+    success_url = reverse_lazy('dashboard')
+    
+    def get_object(self):
+        step = super(DeleteStep, self).get_object()
+        if step.done == True:
+            step.done = 'Yes'
+        else:
+            step.done = 'No'
+        if not step.goal.user == self.request.user:
+            raise Http404
+        return step
 
 class SignUp(generic.CreateView):
 
     form_class = UserCreationForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
     template_name = 'registration/signup.html'
     
     def form_valid(self, form):
@@ -38,14 +89,14 @@ class CreateGoal(LoginRequiredMixin, generic.CreateView):
     model = Goal
     fields = ['title']
     template_name = 'goals/create_goal.html'
-    # success_url = reverse_lazy('dashboard')
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
+
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         super(CreateGoal, self).form_valid(form)
-        # return redirect('dashboard')
-        return redirect('home')
+        return redirect('dashboard')
+
 
 class DetailGoal(generic.DetailView):
     model = Goal
@@ -55,8 +106,8 @@ class UpdateGoal(LoginRequiredMixin, generic.UpdateView):
     model = Goal
     template_name = 'goals/update_goal.html'
     fields = ['title']
-    # success_url = reverse_lazy('dashboard')
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
+
 
     def get_object(self):
         goal = super(UpdateGoal, self).get_object()

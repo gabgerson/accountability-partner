@@ -34,5 +34,10 @@ urlpatterns = [
     path('goals/<int:pk>', views.DetailGoal.as_view(), name='detail_goal'),
     path('goals/<int:pk>/update', views.UpdateGoal.as_view(), name='update_goal'),
     path('goals/<int:pk>/delete', views.DeleteGoal.as_view(), name='delete_goal'),
+    # STEP
+    path('goals/<int:pk>/addstep', views.add_step, name='add_step'),
+    # TODO: ADD SEARCH STEPS
+    path('steps/<int:pk>/deletestep', views.DeleteStep.as_view(), name='delete_step'),
+    path('steps/<int:pk>/updatestep', views.UpdateStep.as_view(), name='update_step'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT )
