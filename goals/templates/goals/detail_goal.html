@@ -28,6 +28,7 @@
               {% endif %}
               
               {% if user.id == goal.user.id %}
+              <a href="{% url 'update_step' step.id %}" class="btn btn-primary">Edit Step</a>
               <a href="{% url 'delete_step' step.id %}" class="btn btn-danger">Delete</a>
               {% endif %}
             </div>  
