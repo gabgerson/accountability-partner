@@ -10,7 +10,7 @@ class Step(models.Model):
     progress = models.TextField(default='In Progress')
     done = models.BooleanField()
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
   
 # Blog
 class Blog(models.Model):

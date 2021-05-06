@@ -36,7 +36,7 @@ def add_step(request, pk):
             step.goal = goal
             step.title = form.cleaned_data['title']
             print(step.title)
-    
+            step.user = request.user
             step.progress = form.cleaned_data['progress']
             step.done = form.cleaned_data['done']
             step.save()

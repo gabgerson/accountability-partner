@@ -6,7 +6,7 @@ from goals.models import Goal, Step
 
 
 
-class GoalList(generics.ListCreateAPIView):
+class GoalListCreate(generics.ListCreateAPIView):
     serializer_class = GoalSerializer
     permissions = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -23,15 +23,15 @@ class GoalRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GoalSerializer
     permission_classes =[permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
-    def delete(self, request, *args, **kwargs):
-        goal = Goal.objects.filter(pk=kwargs['pk'], user=self.request.user)
-        if goal.exists():
-            return self.destroy(request, *args, **kwargs)
-        else:
+    # def delete(self, request, *args, **kwargs):
+    #     goal = Goal.objects.filter(pk=kwargs['pk'], user=self.request.user)
+    #     if goal.exists():
+    #         return self.destroy(request, *args, **kwargs)
+    #     else:
 
-            raise ValidationError('You isn\'t your goal to delete.')
+    #         raise ValidationError('You isn\'t your goal to delete.')
 
-class StepCreate(generics.CreateAPIView):
+class StepListCreate(generics.ListCreateAPIView):
 
     serializer_class = StepSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -42,7 +42,8 @@ class StepCreate(generics.CreateAPIView):
         return Step.objects.filter(goal=goal)
 
     def perform_create(self, serializer):
-        serializer.save(goal=Goal.objects.get(pk=self.kwargs['pk']))
+
+        serializer.save(goal=Goal.objects.get(pk=self.kwargs['pk']), user = self.request.user)
     
 
 class StepRetreiveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -55,18 +56,18 @@ class StepRetreiveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
         return Step.objects.filter(id=self.kwargs['pk'])
 
-    def delete(self, request, *args, **kwargs):
-        step = Step.objects.filter(pk=kwargs['pk'])
-        print(step[0].goal.id)
-        goal_pk = step[0].goal.id
-        # print(goal_pk)
-        goal = Goal.objects.filter(pk=goal_pk, user = self.request.user)
+    # def delete(self, request, *args, **kwargs):
+    #     step = Step.objects.filter(pk=kwargs['pk'])
+    #     print(step[0].goal.id)
+    #     goal_pk = step[0].goal.id
+    #     # print(goal_pk)
+    #     goal = Goal.objects.filter(pk=goal_pk, user = self.request.user)
 
 
-        if goal.exists():
-            if step.exists():
-                return self.destroy(request, *args, **kwargs)
-        else:
+    #     if goal.exists():
+    #         if step.exists():
+    #             return self.destroy(request, *args, **kwargs)
+    #     else:
 
-            raise ValidationError('You isn\'t your goal to delete.')
+    #         raise ValidationError('You isn\'t your goal to delete.')
 
