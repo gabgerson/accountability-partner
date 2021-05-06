@@ -10,8 +10,8 @@ class Step(models.Model):
     progress = models.TextField(default='In Progress')
     done = models.BooleanField()
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
-    # goal = models.ForeignKey(Goal, related_name = 'steps', on_delete=models.CASCADE)
-
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+  
 # Blog
 class Blog(models.Model):
     title = models.CharField(max_length=255)
