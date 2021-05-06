@@ -36,6 +36,7 @@ def add_step(request, pk):
             step.goal = goal
             step.title = form.cleaned_data['title']
             print(step.title)
+    
             step.progress = form.cleaned_data['progress']
             step.done = form.cleaned_data['done']
             step.save()
@@ -53,6 +54,7 @@ class UpdateStep(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self):
         step = super(UpdateStep, self).get_object()
+        print(step.goal.user.id)
         if not step.goal.user == self.request.user:
             raise Http404
         return step
