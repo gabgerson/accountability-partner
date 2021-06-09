@@ -7,13 +7,45 @@
       {% csrf_token %}
    
 
+  
+      {% load widget_tweaks %}
+  
+      
       <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
-        {{ form.as_p }}
+        <div>Title: {{ form.title }}</div>
+        <div>Progress: {{ form.progress }}</div>
+        <div>Done: {{ form.done }}</div>
+        <div>Deadline: {% render_field form.deadline    %}</div>
+        <!-- {{ form.as_p }} -->
+        {{ step.deadline }}
+        <!-- {{ form.deadline|attr:"type:datetime-local"|attr:"value:value" }}s -->
+        {{ form.deadline }}
+        {{ form.deadline }}
+       
+  
+
+  
+        <div id="hidden_div" hidden>{{step.deadline}}</div>
+     
+     
       </div>
+      
 
       <button type="submit" class="btn btn-primary">Save</button>
     </form>
     </br>
 
   </div>
+  <script>
+    let date = document.getElementById("hidden_div");
+    let date2 = document.getElementById("id_deadline");
+    console.log(date.innerText  + " UTC")
+    console.log(date2.value+ " UTC")
+
+    date2 = date2.value+ " UTC"
+    console.log(date2)
+
+    
+
+  </script>
 {% endblock %}

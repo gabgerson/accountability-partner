@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Main Goals App
 class Goal(models.Model):
     title = models.CharField(max_length=255)
@@ -11,6 +12,9 @@ class Step(models.Model):
     done = models.BooleanField()
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(default=timezone.now())
+    deadline = models.DateTimeField(null=True)
+
   
 # Blog
 class Blog(models.Model):

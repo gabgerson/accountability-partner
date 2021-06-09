@@ -4,9 +4,8 @@ from django import forms
 class StepForm(forms.ModelForm):
     class Meta:
         model = Step
-        fields = ['title', 'progress', 'done']
+        fields = ['title', 'progress', 'done','deadline']
         # labels = {'url': 'YouTube Url'}
 
 class SearchForm(forms.Form):
     pass
-#     search_term = forms.CharField(max_length=255, label='Search for Videos')

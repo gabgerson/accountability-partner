@@ -20,7 +20,9 @@
             <div class="card-body">
               <p class="card-text">{{ step.title }}</p>
               <p class="card-text">{{ step.progress }}</p>
-              
+              <p class="card-text">{{ step.date_created }}Date_created</p>
+              <p class="card-text">{{ step.deadline }}</p>
+  
               {% if  step.done  == False %}
               <h6 class="card-text">Done: No</h6>
               {% else %}

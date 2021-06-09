@@ -4,8 +4,8 @@ from goals.models import Goal, Step
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        read_only_fields = ['goal']
-        fields = ['id', 'title', 'progress', 'done', 'goal']
+        read_only_fields = ['goal', 'date_created']
+        fields = ['id', 'title', 'progress', 'done', 'goal', 'date_created', 'deadline']
 
 
 

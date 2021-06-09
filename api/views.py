@@ -42,7 +42,7 @@ class StepListCreate(generics.ListCreateAPIView):
         return Step.objects.filter(goal=goal)
 
     def perform_create(self, serializer):
-
+        # serializer.instance.date_created = timezone.now()
         serializer.save(goal=Goal.objects.get(pk=self.kwargs['pk']), user = self.request.user)
     
 

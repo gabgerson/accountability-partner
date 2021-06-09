@@ -27,7 +27,7 @@ def add_step(request, pk):
     goal = Goal.objects.get(pk=pk)
     if not goal.user == request.user:
         raise Http404
-
+    
     if request.method == 'POST':
         #CREATE
         form = StepForm(request.POST)
@@ -35,7 +35,7 @@ def add_step(request, pk):
             step = Step()
             step.goal = goal
             step.title = form.cleaned_data['title']
-            print(step.title)
+            step.deadline = form.cleaned_data['deadline']
             step.user = request.user
             step.progress = form.cleaned_data['progress']
             step.done = form.cleaned_data['done']
@@ -48,7 +48,7 @@ def add_step(request, pk):
 class UpdateStep(LoginRequiredMixin, generic.UpdateView):
     model = Step
     template_name = 'goals/update_step.html'
-    fields = ['title', 'progress', 'done']
+    fields = ['title', 'progress', 'done', 'deadline']
     success_url = reverse_lazy('dashboard')
 
 

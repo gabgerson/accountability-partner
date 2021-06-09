@@ -7,12 +7,22 @@
       {% csrf_token %}
 
   
- 
+      {% load widget_tweaks %}
       <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
-        {{ form.as_p }}
+        <div>Title: {{ form.title }}</div>
+        <div>Progress: {{ form.progress }}</div>
+        <div>Done: {{ form.done }}</div>
+        <div>Deadline: {{ form.deadline|attr:"type:datetime-local" }}</div>
+        <!-- {{ form.as_p }} -->
+        {{ form.deadline }}
+
+     
       </div>
       
+
     
       <button type="submit" class="btn btn-primary">Add</button>
     </form>
+
+
 {% endblock %}

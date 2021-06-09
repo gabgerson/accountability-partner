@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 pillow = "*"
 djangorestframework = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 
