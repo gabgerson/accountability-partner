@@ -11,7 +11,7 @@ urlpatterns = [
     path('steps/<int:pk>', views.StepRetreiveUpdateDestroy.as_view()),
 
     # Auth
-    # path('signup', views.signup),
+    path('signup', views.UserCreate.as_view(), name='create_user'),
     # path('login', views.login),
     
 ]

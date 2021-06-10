@@ -1,9 +1,10 @@
-from rest_framework import generics, permissions, mixins, status
-from .serializers import GoalSerializer, StepSerializer
+from rest_framework import generics, permissions, mixins, status, views
+from .serializers import GoalSerializer, StepSerializer, SignUpSerializer
 from rest_framework.exceptions import ValidationError
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.permissions import AllowAny
 from goals.models import Goal, Step
-
+from rest_framework.response import Response
 
 
 class GoalListCreate(generics.ListCreateAPIView):
@@ -71,3 +72,25 @@ class StepRetreiveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
     #         raise ValidationError('You isn\'t your goal to delete.')
 
+
+class UserCreate(views.APIView):
+
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None):
+        serializer = SignUpSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+{
+    "username": "cane2",
+    "email": "canela1246@gmail.com",
+    "password": "django1234",
+    "firstname": "canelita",
+    "lastname": "gerson"
+}
