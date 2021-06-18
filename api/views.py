@@ -87,10 +87,3 @@ class UserCreate(views.APIView):
 
 
 
-{
-    "username": "cane2",
-    "email": "canela1246@gmail.com",
-    "password": "django1234",
-    "firstname": "canelita",
-    "lastname": "gerson"
-}
