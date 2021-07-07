@@ -12,6 +12,7 @@ urlpatterns = [
 
     # Auth
     path('signup', views.UserCreate.as_view(), name='create_user'),
-    # path('login', views.login),
+    path('logout/blacklist', views.BlacklistTokenView.as_view(), name='blacklist')
+
     
 ]

@@ -12,13 +12,13 @@ class StepSerializer(serializers.ModelSerializer):
 
 class GoalSerializer(serializers.ModelSerializer):
 
-    # step_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Step.objects.all())
+  
     step_set = StepSerializer(many=True, read_only=True)
-    # steps = serializers.StringRelatedField(many=True)
+
 
     class Meta:
         model = Goal
-        fields = ['id', 'title','step_set']
+        fields = ['id', 'title', 'step_set']
 
 
 
